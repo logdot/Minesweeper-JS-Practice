@@ -1,0 +1,19 @@
+/*Initial parent grid - display flex and flex-wrap allow the child elements to fit within this element and stack if necesary*/
+.grid {
+    width: 400px;
+    height: 400px;
+    background-color:grey;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/*Styling for divs appended in JS file. Selecting this way allows us to manipulate any children/appended divs within the .grid class*/
+.grid div {
+    width: 40px;
+    height: 40px;
+}
+
+.checked {
+    background-color: blue;
+}
+
