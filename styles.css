@@ -13,6 +13,11 @@
     height: 40px;
 }
 
+.bomb {
+	text-align: center;
+	line-height: 40px;
+}
+
 .checked {
     background-color: blue;
 }
