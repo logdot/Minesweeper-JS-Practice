@@ -1,6 +1,6 @@
 /*Initial parent grid - display flex and flex-wrap allow the child elements to fit within this element and stack if necesary*/
 .grid {
-	/*Each element now has 1 more pixel on each side, and there are 10 elements per row so we need to add 2*10 = 20 more pixels to the grid*/
+    /*Each element now has 1 more pixel on each side, and there are 10 elements per row so we need to add 2*10 = 20 more pixels to the grid*/
     width: 420px;
     height: 420px;
     background-color:grey;
@@ -12,13 +12,13 @@
 .grid div {
     width: 40px;
     height: 40px;
-	border-style: solid;
-	border-width: 1px;
+    border-style: solid;
+    border-width: 1px;
 }
 
 .bomb {
-	text-align: center;
-	line-height: 40px;
+    text-align: center;
+    line-height: 40px;
 }
 
 .checked {
