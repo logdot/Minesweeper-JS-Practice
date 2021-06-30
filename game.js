@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
             //**normal click
             square.addEventListener('click', function(e) {
                 click(square);
+                //ADD: Call countNearbyBombs()
+                console.log(square.id -1 + width);
+                //countNearbyBombs(square);
             });
 
             //cntrl and left click
@@ -43,50 +46,100 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
 
-         //**calculate number of bombs
+        //ADD: countNearbyBombs()
+
+        function countNearbyBombs(square){
+            let total = 0;
+            const isLeftEdge =(square.id % width === 0);
+            const isRightEdge = (square.id % width === width -1);    
+            
+            if (square.classList.contains('valid')) {
+                //Bomb is West?
+                if (!isLeftEdge && squares[square.id - 1].classList.contains('bomb')){
+                    total ++
+                }
+                //Bomb is NE?
+                if (square.id > 9 && !isRightEdge && squares[square.id +1 -width].classList.contains('bomb')){
+                    total ++
+                }
+                //Bomb is North?
+                if (square.id > 9 && squares[square.id - width].classList.contains('bomb')){
+                    total ++
+                }
+                //Bomb is NW?
+                if(square.id > 10 && !isLeftEdge && squares[square.id - 1 - width].classList.contains('bomb')){
+                    total ++
+                }
+                //Bomb is East?
+                if(!isRightEdge && squares[square.id + 1].classList.contains('bomb')){
+                    total++
+                }
+                //Bomb is SW?
+                if(square.id < 90 && !isLeftEdge && squares[square.id - 1 + width].classList.contains('bomb')){
+                    total++
+                }
+                //Bomb is SE?
+                if(square.id < 89 && !isRightEdge && squares[square.id + 1 + width].classList.contains('bomb')){
+                    total++
+                }
+                //Bomb is South?
+                if (square.id < 90 && squares[square.id + width].classList.contains('bomb')){
+                    total++
+                }
+                square.setAttribute('totalBombs', total);
+            }
+        }
+
+         
+
+        /*
+         //Identify # of bombs surrounding each element/square. Stretch goal = convert to function which takes selected element
         for (let i = 0; i < squares.length; i++){
             let total = 0;
             const isLeftEdge =(i % width === 0);
             const isRightEdge = (i % width === width -1);
             
             if (squares[i].classList.contains('valid')) {
-                //if squares index is greater than zero, and is not LeftEdge, check if square to left is bomb.
-                if (i > 0 && !isLeftEdge && squares[i -1].classList.contains('bomb')){
+                //Bomb is West?
+                if (!isLeftEdge && squares[i -1].classList.contains('bomb')){
                     total ++
                 }
-                //if squares index is greater than 9, and is not RightEdge, check if square to up-right is bomb.
+                //Bomb is NE?
                 if (i > 9 && !isRightEdge && squares[i +1 -width].classList.contains('bomb')){
                     total ++
                 }
-                //if squares index is greater than 10, check if square to up is bomb. - should trigger
-                if (i > 10 && squares[i -width].classList.contains('bomb')){
+                //Bomb is North?
+                if (i > 9 && squares[i -width].classList.contains('bomb')){
                     total ++
                 }
-                //if squares index is greater than 11, and is not LeftEdge, check if square to up-left is bomb.
-                if(i > 11 && !isLeftEdge && squares[i -1 -width].classList.contains('bomb')){
+                //Bomb is NW?
+                if(i > 10 && !isLeftEdge && squares[i -1 -width].classList.contains('bomb')){
                     total ++
                 }
-                //if squares index is less than 98, and is not RightEdge, check if square to right is bomb.
-                if(i < 98 && !isRightEdge && squares[i +1].classList.contains('bomb')){
+                //Bomb is East?
+                if(!isRightEdge && squares[i +1].classList.contains('bomb')){
                     total++
                 }
-                //if squares index is less than 90 and is not LeftEdge, check if square to down-left is bomb.
+                //Bomb is SW?
                 if(i < 90 && !isLeftEdge && squares[i -1 +width].classList.contains('bomb')){
                     total++
                 }
-                //if squares index is less than 88 and is not LeftEdge, check if square to down-right is bomb.
-                if(i < 88 && !isRightEdge && squares[i +1 +width].classList.contains('bomb')){
+                //Bomb is SE?
+                if(i < 89 && !isRightEdge && squares[i +1 +width].classList.contains('bomb')){
                     total++
                 }
-                //if squares index is less than 89, check if square to down is bomb.
-                if (i < 89 && squares[i +width].classList.contains('bomb')){
+                //Bomb is South?
+                if (i < 90 && squares[i +width].classList.contains('bomb')){
                     total++
                 }
                 squares[i].setAttribute('totalBombs', total);
             }
         }
+        */
+        
 
     }
+
     createBoard();
 
     //add flag with right click
@@ -137,42 +190,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const isRightEdge = (currentId % width === width -1)
 
         setTimeout(() => {
-            if (currentId > 0 && !isLeftEdge) {
+            //Check square to West
+            if (!isLeftEdge) {
                 const newId = squares[parseInt(currentId) -1].id
                 const newSquare = document.getElementById(newId)
                 click(newSquare)
             }
+            //Check square to NE
             if (currentId > 9 && !isRightEdge){
                 const newId = squares[parseInt(currentId) +1 -width].id
                 const newSquare = document.getElementById(newId)
                 click(newSquare);
             }
-            if (currentId > 10){
+            //Check square to North
+            if (currentId > 9){
                 const newId = squares[parseInt(currentId) -width].id // keep an eye on this line.
                 const newSquare = document.getElementById(newId)
                 click(newSquare);
             } 
-            if (currentId > 11 && !isLeftEdge){
+            //Check square to NW
+            if (currentId > 10 && !isLeftEdge){
                 const newId = squares[parseInt(currentId) -1 -width].id
                 const newSquare = document.getElementById(newId)
                 click(newSquare);
-            }                         
-            if (currentId < 98 && !isRightEdge){
+            }
+            //Check square to East                       
+            if (!isRightEdge){
                 const newId = squares[parseInt(currentId) +1].id
                 const newSquare = document.getElementById(newId)
                 click(newSquare);
             }
+            //Check square to SW
             if (currentId < 90 && !isLeftEdge){
                 const newId = squares[parseInt(currentId) -1 +width].id
                 const newSquare = document.getElementById(newId)
                 click(newSquare);
             }
-            if (currentId < 88 && !isRightEdge){
+            //Check square to SE
+            if (currentId < 89 && !isRightEdge){
                 const newId = squares[parseInt(currentId) +1 +width].id
                 const newSquare = document.getElementById(newId)
                 click(newSquare);
-            }    
-            if (currentId < 89){
+            }
+            //Check square to South    
+            if (currentId < 90){
                 const newId = squares[parseInt(currentId) +width].id
                 const newSquare = document.getElementById(newId)
                 click(newSquare);

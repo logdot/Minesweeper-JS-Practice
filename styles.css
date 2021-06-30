@@ -1,11 +1,27 @@
 /*Initial parent grid - display flex and flex-wrap allow the child elements to fit within this element and stack if necesary*/
+body {
+    background: black;
+}
+
+.title h2{
+    font-size: 72px;
+    background-image: -webkit-linear-gradient(45deg ,yellow, red);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin: 0;
+}
+
 .grid {
     /*Each element now has 1 more pixel on each side, and there are 10 elements per row so we need to add 2*10 = 20 more pixels to the grid*/
     width: 420px;
     height: 420px;
-    background-color:grey;
+    background:linear-gradient(45deg, yellow, red);
     display: flex;
     flex-wrap: wrap;
+    margin: auto;
+
 }
 
 /*Styling for divs appended in JS file. Selecting this way allows us to manipulate any children/appended divs within the .grid class*/
@@ -14,6 +30,7 @@
     height: 40px;
     border-style: solid;
     border-width: 1px;
+    text-align: center;
 }
 
 .bomb {
@@ -22,6 +39,8 @@
 }
 
 .checked {
-    background-color: blue;
+    background:grey;
+    opacity: 50%;
 }
+
 
