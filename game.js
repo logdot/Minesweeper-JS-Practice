@@ -80,6 +80,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return surroundingSquares;
     }
 
+    function countNearbyBombs(square){
+        if (square.classList.contains('valid')) {
+            let total = 0;
+            let sqs = getNearbySquares(square);
+
+            // Why can't I do
+            // for (sq in sqs) { ?
+            for (let i = 0; i <= 9; i++) {
+                if (sqs[i] == null) {
+                    continue;
+                }
+
+                if (sqs[i].classList.contains('bomb')) {
+                    total++;
+                }
+            }
+
+            square.setAttribute('totalBombs', total);
+        }
+    }
+
 
     //**create board
     function createBoard() {
@@ -116,51 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         }
-
-        //ADD: countNearbyBombs()
-
-        function countNearbyBombs(square){
-            let total = 0;
-            squareIDInt = parseInt(square.id);
-            const isLeftEdge =(square.id % width === 0);
-            const isRightEdge = (square.id % width === width -1);    
-            
-            if (square.classList.contains('valid')) {
-                //Bomb is West?
-                if (!isLeftEdge && squares[squareIDInt - 1].classList.contains('bomb')){
-                    total ++
-                }
-                //Bomb is NE?
-                if (square.id > 9 && !isRightEdge && squares[squareIDInt +1 -10].classList.contains('bomb')){
-                    total ++
-                }
-                //Bomb is North?
-                if (square.id > 9 && squares[squareIDInt - width].classList.contains('bomb')){
-                    total ++
-                }
-                //Bomb is NW?
-                if(square.id > 10 && !isLeftEdge && squares[squareIDInt - 1 - width].classList.contains('bomb')){
-                    total ++
-                }
-                //Bomb is East?
-                if(!isRightEdge && squares[squareIDInt + 1].classList.contains('bomb')){
-                    total++
-                }
-                //Bomb is SW?
-                if(square.id < 90 && !isLeftEdge && squares[squareIDInt - 1 + width].classList.contains('bomb')){
-                    total++
-                }
-                //Bomb is SE?
-                if(square.id < 89 && !isRightEdge && squares[squareIDInt + 1 + width].classList.contains('bomb')){
-                    total++
-                }
-                //Bomb is South?
-                if (square.id < 90 && squares[squareIDInt + width].classList.contains('bomb')){
-                    total++
-                }
-                square.setAttribute('totalBombs', total);
-            }
-        }
     }
 
     createBoard();
@@ -186,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //click on square actions
     function click(square) {
-        let currentId = square.id
         if(isGameOver) {
             return;
         };
@@ -202,65 +177,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 square.innerHTML = total;
                 return;
             }
-            checkSquare(square, currentId)
+            checkSquare(square)
         }
         square.classList.add('checked');
     }    
 
     //check neigboring squares once square is clicked.
-    function checkSquare(square,currentId){
-        const isLeftEdge = (currentId % width === 0)
-        const isRightEdge = (currentId % width === width -1)
-
+    function checkSquare(square){
         setTimeout(() => {
-            //Check square to West
-            if (!isLeftEdge) {
-                const newId = squares[parseInt(currentId) -1].id
-                const newSquare = document.getElementById(newId) // <--- Identify this and follow it through the engine.
-                click(newSquare)
+            sqs = getNearbySquares(square)
+
+            for (let i = 0; i <= 9; i++) {
+                console.log(sqs[i])
+                if (sqs[i] === null) {
+                    continue;
+                }
+
+                click(sqs[i]);
             }
-            //Check square to NE
-            if (currentId > 9 && !isRightEdge){
-                const newId = squares[parseInt(currentId) +1 -width].id
-                const newSquare = document.getElementById(newId)
-                click(newSquare);
-            }
-            //Check square to North
-            if (currentId > 9){
-                const newId = squares[parseInt(currentId) -width].id // keep an eye on this line.
-                const newSquare = document.getElementById(newId)
-                click(newSquare);
-            } 
-            //Check square to NW
-            if (currentId > 10 && !isLeftEdge){
-                const newId = squares[parseInt(currentId) -1 -width].id
-                const newSquare = document.getElementById(newId)
-                click(newSquare);
-            }
-            //Check square to East                       
-            if (!isRightEdge){
-                const newId = squares[parseInt(currentId) +1].id
-                const newSquare = document.getElementById(newId)
-                click(newSquare);
-            }
-            //Check square to SW
-            if (currentId < 90 && !isLeftEdge){
-                const newId = squares[parseInt(currentId) -1 +width].id
-                const newSquare = document.getElementById(newId)
-                click(newSquare);
-            }
-            //Check square to SE
-            if (currentId < 89 && !isRightEdge){
-                const newId = squares[parseInt(currentId) +1 +width].id
-                const newSquare = document.getElementById(newId)
-                click(newSquare);
-            }
-            //Check square to South    
-            if (currentId < 90){
-                const newId = squares[parseInt(currentId) +width].id
-                const newSquare = document.getElementById(newId)
-                click(newSquare);
-            }                                                                
         }, 10)
     }
 
