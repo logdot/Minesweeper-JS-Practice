@@ -9,6 +9,78 @@ document.addEventListener('DOMContentLoaded', () => {
     let squares = [];
     let isGameOver = false;
 
+    // This function returns a 9 element list with all of the surrounding
+    // squares. It starts at the top left and goes in a clock wise direction.
+    // If a square in that position doesn't exist, it will return null in that
+    // position.
+    function getNearbySquares(square) {
+        let surroundingSquares = []
+        squareId = parseInt(square.id);
+
+        const isLeftEdge = (squareId % width === 0);
+        const isRightEdge = (squareId % width === width - 1);
+        const isTopEdge = (squareId <= 9);
+        const isBottomEdge = (squareId >= width * (width - 1));
+
+        if (!isTopEdge && !isLeftEdge ) {
+            surroundingSquares.push(squares[squareId - width - 1]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        if (!isTopEdge) {
+            surroundingSquares.push(squares[squareId - width]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        if (!isTopEdge && !isRightEdge) {
+            surroundingSquares.push(squares[squareId - width + 1]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        if (!isRightEdge) {
+            surroundingSquares.push(squares[squareId + 1]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        if (!isBottomEdge && !isRightEdge) {
+            surroundingSquares.push(squares[squareId + width + 1]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        if (!isBottomEdge) {
+            surroundingSquares.push(squares[squareId + width]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        if (!isBottomEdge && !isLeftEdge) {
+            surroundingSquares.push(squares[squareId + width - 1]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        if (!isLeftEdge) {
+            surroundingSquares.push(squares[squareId - 1]);
+        } else {
+            surroundingSquares.push(null);
+        }
+
+        console.log(squareId);
+        console.log(isLeftEdge);
+        console.log(isTopEdge);
+        console.log(isRightEdge);
+        console.log(isBottomEdge);
+        console.log(surroundingSquares);
+
+        return surroundingSquares;
+    }
+
+
     //**create board
     function createBoard() {
         //get shuffled game array with random bombs
@@ -217,11 +289,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
-
-
-
-
-
-
 })
