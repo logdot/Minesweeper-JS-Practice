@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             //**normal click
             square.addEventListener('click', function(e) {
-                countNearbyBombs(square);
                 click(square);
                 console.log(square);
             });
@@ -140,6 +139,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     createBoard();
+
+    for (let i = 0; i < squares.length; i++) {
+        countNearbyBombs(squares[i]);
+    }
 
     //add flag with right click
     function addFlag(square){
